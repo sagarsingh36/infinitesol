@@ -1,0 +1,69 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "AdfSagar2"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase2_connectionString": {
+			"value": ""
+		},
+		"LS_ADLS_accountKey": {
+			"value": ""
+		},
+		"LS_ADLSGEN2_accountKey": {
+			"value": ""
+		},
+		"LS_ASD_connectionString": {
+			"value": ""
+		},
+		"LS_gen2_storagesagar_accountKey": {
+			"value": ""
+		},
+		"LS_sqllocal_connectionString": {
+			"value": ""
+		},
+		"ds1_accountKey": {
+			"value": ""
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"value": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"LS_ADLSGEN2_properties_typeProperties_url": {
+			"value": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"LS_gen2_storagesagar_properties_typeProperties_url": {
+			"value": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"ds1_properties_typeProperties_url": {
+			"value": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppstartTime": {
+			"value": "@trigger().startTime"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppwindowstartTime": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppwindowendTime": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppstarttime": {
+			"value": "@trigger().startTime"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppwindowstarttime": {
+			"value": "@trigger().outputs.windowStartTime\n"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppwindowendtime": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -1,0 +1,208 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AdfSagar2"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"AzureSqlDatabase2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase2'"
+		},
+		"LS_ADLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
+		},
+		"LS_ADLSGEN2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_ADLSGEN2'"
+		},
+		"LS_ASD_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_ASD'"
+		},
+		"LS_gen2_storagesagar_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_gen2_storagesagar'"
+		},
+		"LS_sqllocal_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_sqllocal'"
+		},
+		"ds1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ds1'"
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"LS_ADLSGEN2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"LS_gen2_storagesagar_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"ds1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagesagar.dfs.core.windows.net/"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppstartTime": {
+			"type": "string",
+			"defaultValue": "@trigger().startTime"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppwindowstartTime": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"Tumbling_trigger1_properties_pipeline_parameters_ppwindowendTime": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppstarttime": {
+			"type": "string",
+			"defaultValue": "@trigger().startTime"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppwindowstarttime": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime\n"
+		},
+		"tumbling_trigger_properties_pipeline_parameters_ppwindowendtime": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "AdfSagar2_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
+					},
+					"AzureSqlDatabase2_connectionString": {
+						"value": "[parameters('AzureSqlDatabase2_connectionString')]"
+					},
+					"LS_ADLS_accountKey": {
+						"value": "[parameters('LS_ADLS_accountKey')]"
+					},
+					"LS_ADLSGEN2_accountKey": {
+						"value": "[parameters('LS_ADLSGEN2_accountKey')]"
+					},
+					"LS_ASD_connectionString": {
+						"value": "[parameters('LS_ASD_connectionString')]"
+					},
+					"LS_gen2_storagesagar_accountKey": {
+						"value": "[parameters('LS_gen2_storagesagar_accountKey')]"
+					},
+					"ds1_accountKey": {
+						"value": "[parameters('ds1_accountKey')]"
+					},
+					"LS_ADLS_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLS_properties_typeProperties_url')]"
+					},
+					"LS_ADLSGEN2_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLSGEN2_properties_typeProperties_url')]"
+					},
+					"LS_gen2_storagesagar_properties_typeProperties_url": {
+						"value": "[parameters('LS_gen2_storagesagar_properties_typeProperties_url')]"
+					},
+					"ds1_properties_typeProperties_url": {
+						"value": "[parameters('ds1_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "AdfSagar2_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_sqllocal_connectionString": {
+						"value": "[parameters('LS_sqllocal_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AdfSagar2_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "AdfSagar2_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"Tumbling_trigger1_properties_pipeline_parameters_ppstartTime": {
+						"value": "[parameters('Tumbling_trigger1_properties_pipeline_parameters_ppstartTime')]"
+					},
+					"Tumbling_trigger1_properties_pipeline_parameters_ppwindowstartTime": {
+						"value": "[parameters('Tumbling_trigger1_properties_pipeline_parameters_ppwindowstartTime')]"
+					},
+					"Tumbling_trigger1_properties_pipeline_parameters_ppwindowendTime": {
+						"value": "[parameters('Tumbling_trigger1_properties_pipeline_parameters_ppwindowendTime')]"
+					},
+					"tumbling_trigger_properties_pipeline_parameters_ppstarttime": {
+						"value": "[parameters('tumbling_trigger_properties_pipeline_parameters_ppstarttime')]"
+					},
+					"tumbling_trigger_properties_pipeline_parameters_ppwindowstarttime": {
+						"value": "[parameters('tumbling_trigger_properties_pipeline_parameters_ppwindowstarttime')]"
+					},
+					"tumbling_trigger_properties_pipeline_parameters_ppwindowendtime": {
+						"value": "[parameters('tumbling_trigger_properties_pipeline_parameters_ppwindowendtime')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AdfSagar2_ArmTemplate_1')]"
+			]
+		}
+	]
+}
