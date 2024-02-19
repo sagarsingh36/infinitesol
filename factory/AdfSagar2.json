@@ -1,0 +1,9 @@
+{
+	"name": "AdfSagar2",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "729af5d7-c1b2-4490-a4cc-24b0db36be91",
+		"tenantId": "c3d0f98e-c740-4d84-859d-b0b418502757"
+	}
+}

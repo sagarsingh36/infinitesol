@@ -1,0 +1,92 @@
+{
+	"name": "PL_tumblingtrigger",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copydata_container1to2",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_container1",
+						"type": "DatasetReference",
+						"parameters": {
+							"ws": {
+								"value": "@pipeline().parameters.ppwindowstartTime",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_container2",
+						"type": "DatasetReference",
+						"parameters": {
+							"ws": {
+								"value": "@pipeline().parameters.ppwindowstartTime",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"ppstartTime": {
+				"type": "string"
+			},
+			"ppwindowstartTime": {
+				"type": "string"
+			},
+			"ppwindowendTime": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-01-22T11:58:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

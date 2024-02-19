@@ -1,0 +1,16 @@
+{
+	"name": "SqlServer_onprem",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_sqllocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
