@@ -8,6 +8,25 @@
 
 # COMMAND ----------
 
+#[10:29 AM] Sameer (Guest)
+client_id = dbutils.secrets.get(scope="sagarsecretscope",key="clientserviceid")
+tenant_id = dbutils.secrets.get(scope="sagarsecretscope",key="tenantserviceid")
+client_secret = dbutils.secrets.get(scope="sagarsecretscope",key="clientservicesecretid")
+
+# COMMAND ----------
+
+configs = {"fs.azure.account.auth.type": "OAuth",
+          "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+          "fs.azure.account.oauth2.client.id": client_id,
+          "fs.azure.account.oauth2.client.secret": client_secret,
+          "fs.azure.account.oauth2.client.endpoint": f"https://login.microsoftonline.com/{tenant_id}/oauth2/token"}
+
+# COMMAND ----------
+
+##dbutils.fs.unmount("/mnt/raw/")
+
+# COMMAND ----------
+
 dbutils.fs.mount(
   source = "abfss://raw@fractalstorage9661.dfs.core.windows.net/",
   mount_point = "/mnt/raw",
@@ -15,7 +34,23 @@ dbutils.fs.mount(
 
 # COMMAND ----------
 
+dbutils.fs.unmount("/mnt/container1/")
+
+# COMMAND ----------
+
+dbutils.fs.mount(
+  source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
+  mount_point = "/mnt/container1",
+  extra_configs = configs)
+
+# COMMAND ----------
+
 spark.read.csv("/mnt/raw/circuits.csv")
+
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
@@ -54,7 +89,7 @@ display(circuits_df)
 circuits_df = spark.read.\
     option("header", True)\
         .option("inferSchema",True)\
-            .option("/mnt/raw/circuits.csv")
+            .csv("/mnt/raw/circuits.csv")
 
 
 # COMMAND ----------
@@ -171,6 +206,10 @@ circute_final_df.write.parquet("/mnt/processed/circutes/")
 # COMMAND ----------
 
 df = spark.read.parquet("/mnt/processed/circutes/")
+
+# COMMAND ----------
+
+display(spark.read.parquet("/mnt/processed/circuits/"))
 
 # COMMAND ----------
 

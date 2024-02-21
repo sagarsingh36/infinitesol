@@ -59,7 +59,7 @@ type(data)
 
 # COMMAND ----------
 
-st.paral(data)
+st.parallelize(data)
 
 # COMMAND ----------
 
@@ -71,4 +71,4 @@ rdd.collect()
 
 # COMMAND ----------
 
-def.collect
+def.take(2)
