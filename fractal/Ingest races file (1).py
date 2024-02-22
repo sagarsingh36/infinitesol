@@ -44,19 +44,6 @@ display(races_df)
 
 # COMMAND ----------
 
-race_url_df=races_df.drop("url")
-
-
-# COMMAND ----------
-
-races_df=race_url_df
-
-# COMMAND ----------
-
-display(races_df)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ##Step2 Add ingestion Date and race_timestapmp to the dataframe
 
@@ -71,17 +58,6 @@ from pyspark.sql.functions import to_timestamp, lit, col, concat
 # COMMAND ----------
 
 races_with_timestamp_df = races_df.withColumn("ingestion_timestamp", current_timestamp()) \
-                                  .withColumnRenamed("raceid" , "race_id")\
-                                  .withColumnRenamed("year" , "race_year") \
-                                  .withColumnRenamed("circuteid", "circute_id") \
-                                  .withColumn("race_timestamp", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss'))
-
-# COMMAND ----------
-
-races_with_timestamp_df = races_df.withColumn("ingestion_timestamp", current_timestamp()) \
-                                  .withColumnRenamed("raceid" , "race_id")\
-                                  .withColumnRenamed("year" , "race_year") \
-                                  .withColumnRenamed("circuteid", "circute_id") \
                                   .withColumn("race_timestamp", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss'))
 
 # COMMAND ----------
@@ -95,7 +71,7 @@ display(races_with_timestamp_df)
 
 # COMMAND ----------
 
-##races_selected_df = races_with_timestamp_df.select(col("raceid").alias("race_id"),col("year").alias("race_year"),col("round"),col("circuteid").alias("circute_id"),col("name"),col("ingestion_timestamp"),col("race_timestamp"))
+races_selected_df = races_with_timestamp_df.select(col("raceid").alias("race_id"),col("year").alias("race_year"),col("round"),col("circuteid").alias("circute_id"),col("name"),col("ingestion_timestamp"),col("race_timestamp"))
 
 # COMMAND ----------
 
@@ -103,11 +79,7 @@ display(races_selected_df)
 
 # COMMAND ----------
 
-#final_race_df=races_selected_df.drop("url")
-
-# COMMAND ----------
-
-races_with_timestamp_df.write.mode("overwrite").parquet("/mnt/processed/races")
+races_selected_df.write.mode("overwrite").parquet("/mnt/processed/races")
 
 # COMMAND ----------
 
@@ -120,7 +92,7 @@ display(spark.read.parquet("/mnt/processed/races"))
 
 # COMMAND ----------
 
-races_with_timestamp_df.write.mode("overwrite").partitionBy("race_year").parquet("/mnt/processed/races")
+races_selected_df.write.mode("overwrite").partitionBy("race_year").parquet("/mnt/processed/races")
 
 # COMMAND ----------
 
