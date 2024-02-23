@@ -40,6 +40,10 @@ races_df = spark.read \
 
 # COMMAND ----------
 
+races_df.printSchema()
+
+# COMMAND ----------
+
 display(races_df)
 
 # COMMAND ----------

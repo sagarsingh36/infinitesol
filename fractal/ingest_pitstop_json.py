@@ -13,11 +13,31 @@ from pyspark.sql.types import IntegerType, StringType, StructType,  StructField
 
 # COMMAND ----------
 
+from pyspark.sql.types import IntegerType, StructType,DataType,StringType,FloatType,DoubleType
+
+# COMMAND ----------
+
+dbutils.fs.ls("/mnt/raw/")
+
+# COMMAND ----------
+
 dbutils.fs.ls("/mnt/raw")
 
 # COMMAND ----------
 
 spark.read.json("/mnt/raw/pit_stops.json")
+
+# COMMAND ----------
+
+spark.read.json("/mnt/raw/pit_stops.json")
+
+# COMMAND ----------
+
+display(spark.read.json("/mnt/raw/pit_stops.json"))
+
+# COMMAND ----------
+
+pitstop_schema=StructType(fields=[StructField()])
 
 # COMMAND ----------
 
