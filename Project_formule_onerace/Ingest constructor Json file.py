@@ -4,6 +4,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "https://adb-8340668157867098.18.azuredatabricks.net/?o=8340668157867098#notebook/1667449695352798"
+
+# COMMAND ----------
+
 from pyspark.sql.types import StructType, StructField, StringType,IntegerType
 
 # COMMAND ----------

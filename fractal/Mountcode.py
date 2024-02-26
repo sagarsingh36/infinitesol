@@ -16,27 +16,42 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 
 dbutils.fs.mount(
   source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
-  mount_point = "/mnt/demo",
+  mount_point = "/mnt/raw/",
   extra_configs = configs)
 
 # COMMAND ----------
 
 dbutils.fs.mount(
   source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
-  mount_point = "/mnt/demo",
+  mount_point = "/mnt/processed/",
   extra_configs = configs)
 
 # COMMAND ----------
 
-dbutils.fs.unmount("/mnt/demo/")
+dbutils.fs.unmount("/mnt/raw/")
 
 # COMMAND ----------
 
-dbutils.fs.unmount("/mnt/demo/")
+dbutils.fs.unmount("/mnt/processed/")
 
 # COMMAND ----------
 
-display(spark.read.csv("/mnt/demo/test/Orders.csv"))
+dbutils.fs.mount(
+  source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
+  mount_point = "/mnt/presentation/",
+  extra_configs = configs)
+
+# COMMAND ----------
+
+dbutils.fs.unmount("/mnt/presentation/")
+
+# COMMAND ----------
+
+display(spark.read.csv("/mnt/raw/circuits.csv"))
+
+# COMMAND ----------
+
+display(spark.read.csv("dbfs:/mnt/raw/circuits.csv"))
 
 # COMMAND ----------
 

@@ -221,4 +221,8 @@ circute_final_df.write.mode("overwrite").parquet("/mnt/processed/circutes")
 
 # COMMAND ----------
 
+display(circute_final_df)
+
+# COMMAND ----------
+
 

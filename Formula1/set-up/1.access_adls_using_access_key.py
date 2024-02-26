@@ -12,7 +12,7 @@ dbutils.secrets.get(scope='storagesagar-scope',key='storagesagardl-account-key')
 
 # COMMAND ----------
 
-# formula1dl-account-key get replacet to the key which we get as link
+# formula1dl-account-key get replaced to the key which we get as link
 formula1dl_account_key=dbutils.secrets.get(scope='formula1-scope',key='formula1dl-account-key')
 
 # COMMAND ----------

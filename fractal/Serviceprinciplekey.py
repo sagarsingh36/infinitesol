@@ -14,11 +14,13 @@ spark.conf.set("fs.azure.account.oauth2.client.endpoint.fractalstorage9661.dfs.c
 # COMMAND ----------
 
 dbutils.fs.ls("abfss://demo@fractalstorage9661.dfs.core.windows.net/")
+
            
 
 # COMMAND ----------
 
 display(dbutils.fs.ls("abfss://demo@fractalstorage9661.dfs.core.windows.net/"))
+
 
 # COMMAND ----------
 
@@ -41,6 +43,7 @@ dbutils.fs.mount(
   source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
   mount_point = "/mnt/demo",
   extra_configs = configs)
+
 
 # COMMAND ----------
 

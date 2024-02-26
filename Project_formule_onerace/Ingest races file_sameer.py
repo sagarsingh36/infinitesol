@@ -66,6 +66,18 @@ display(races_with_timestamp_df)
 
 # COMMAND ----------
 
+race_drop_url=races_with_timestamp_df.drop("url")
+
+# COMMAND ----------
+
+races_with_timestamp_df = races_df.withColumn("ingestion_timestamp", current_timestamp()) \
+                                  .withColumnRenamed("raceid" , "race_id")\
+                                  .withColumnRenamed("year" , "race_year") \
+                                  .withColumnRenamed("circuteid", "circute_id") \
+                                 .withColumn("race_timestamp", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss'))
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ##stpe 3 - Select only columns we need
 
