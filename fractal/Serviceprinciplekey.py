@@ -1,7 +1,10 @@
 # Databricks notebook source
 client_id = "80408156-0171-4db5-b754-acfde32938ab"
+          
 tenant_id = "de1fd05e-3bdc-40f4-b1ac-95a5627a510c"
+
 client_secret = "1yT8Q~m_BrOjkIEOJ5xpfVv1M5u.vLmQN0XWYb2Y"
+
 
 # COMMAND ----------
 
@@ -13,14 +16,18 @@ spark.conf.set("fs.azure.account.oauth2.client.endpoint.fractalstorage9661.dfs.c
 
 # COMMAND ----------
 
-dbutils.fs.ls("abfss://demo@fractalstorage9661.dfs.core.windows.net/")
+dbutils.fs.ls("abfss://raw@fractalstorage9661.dfs.core.windows.net/")
 
            
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("abfss://demo@fractalstorage9661.dfs.core.windows.net/"))
+display(dbutils.fs.ls("abfss://processed@fractalstorage9661.dfs.core.windows.net/"))
 
+
+# COMMAND ----------
+
+dbutils.secrets.listScopes()
 
 # COMMAND ----------
 
@@ -41,13 +48,13 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 
 dbutils.fs.mount(
   source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
-  mount_point = "/mnt/demo",
+  mount_point = "/mnt/raw",
   extra_configs = configs)
 
 
 # COMMAND ----------
 
-dbutils.fs.unmount("/mnt/demo/")
+dbutils.fs.unmount("/mnt/presentation/")
 
 # COMMAND ----------
 
@@ -57,7 +64,7 @@ display(dbutils.fs.mounts())
 
 # COMMAND ----------
 
-display(spark.read.csv("/mnt/demo/test/Orders.csv"))
+display(spark.read.csv("/mnt/raw/circuits.csv"))
 
 # COMMAND ----------
 

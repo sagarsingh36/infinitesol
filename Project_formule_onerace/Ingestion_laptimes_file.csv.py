@@ -15,11 +15,11 @@ client_secret = dbutils.secrets.get(scope="sagarsecretscope",key="clientservices
 
 # COMMAND ----------
 
-configs = {"fs.azure.account.auth.type": "OAuth",
-          "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
-          "fs.azure.account.oauth2.client.id": client_id,
-          "fs.azure.account.oauth2.client.secret": client_secret,
-          "fs.azure.account.oauth2.client.endpoint": f"https://login.microsoftonline.com/{tenant_id}/oauth2/token"}
+#configs = {"fs.azure.account.auth.type": "OAuth",
+         # "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+         # "fs.azure.account.oauth2.client.id": client_id,
+         # "fs.azure.account.oauth2.client.secret": client_secret,
+          #"fs.azure.account.oauth2.client.endpoint": f"https://login.microsoftonline.com/{tenant_id}/oauth2/token"}
 
 # COMMAND ----------
 
@@ -27,21 +27,14 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 
 # COMMAND ----------
 
-dbutils.fs.mount(
-  source = "abfss://raw@fractalstorage9661.dfs.core.windows.net/",
-  mount_point = "/mnt/raw",
-  extra_configs = configs)
+#dbutils.fs.mount(
+  #source = "abfss://raw@fractalstorage9661.dfs.core.windows.net/",
+ # mount_point = "/mnt/raw",
+  #extra_configs = configs)
 
 # COMMAND ----------
 
-dbutils.fs.unmount("/mnt/container1/")
-
-# COMMAND ----------
-
-dbutils.fs.mount(
-  source = "abfss://demo@fractalstorage9661.dfs.core.windows.net/",
-  mount_point = "/mnt/container1",
-  extra_configs = configs)
+#dbutils.fs.unmount("/mnt/container1/")
 
 # COMMAND ----------
 
@@ -66,16 +59,12 @@ display(laptimes_df)
 
 # COMMAND ----------
 
-laptimes_df.printschema()
+laptimes_df.printSchema()
 
 
 # COMMAND ----------
 
 from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
-
-# COMMAND ----------
-
-from pyspark.sql.types import StructType,StructField,StringType,IntegerType
 
 # COMMAND ----------
 
@@ -99,143 +88,28 @@ display(laptimes_df)
 
 # COMMAND ----------
 
-laptimes_df.write.parquet("/mnt/processed/lap_times/")
+aptimes_renamed_df= laptimes_df.withColumnRenamed("raceId", "race_id") \
+                             .withColumnRenamed("driverId", "driver_id") 
+                            
 
 # COMMAND ----------
 
-df = spark.read.parquet("/mnt/processed/lap_times/")
-laptimes_df.write.parquet("/mnt/processed/lap_times/")
+aptimes_renamed_df.read.parqet("/mnt/processed/lap_times/")
 
 # COMMAND ----------
 
-display(df)
-
-# COMMAND ----------
-
-display(circuits_df)
-
-# COMMAND ----------
-
-circuits_df = spark.read.\
-    option("header", True)\
-        .option("inferSchema",True)\
-            .csv("/mnt/raw/circuits.csv")
+laptimes_final_df = spark.read.parquet("/mnt/processed/lap_times/")
 
 
 # COMMAND ----------
 
-circuits_df = spark.read\
-    .option("header", True)\
-    .option("inferSchema", True)\
-    .csv("/mnt/raw/circuits.csv")
-
-# COMMAND ----------
-
-circuits_df.printSchema
-
-# COMMAND ----------
-
-from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
-
-# COMMAND ----------
-
-#create schema
-circutes_schema = StructType(fields=[StructField("circuitId", IntegerType(), False),
-                                    StructField("circuitRef", StringType(), True),
-                                    StructField("name", StringType(), True),
-                                    StructField("location", StringType(), True),
-                                    StructField("country", StringType(), True),
-                                    StructField("lat", DoubleType(), True),
-                                    StructField("lng", DoubleType(), True),
-                                    StructField("alt", IntegerType(), True),
-                                    StructField("url", StringType(), True)
-                                    ])
-
-
-# COMMAND ----------
-
-circutes_df = spark.read\
-    .option("header", True)\
-        .schema(circutes_schema)\
-            .csv("/mnt/raw/circuits.csv")
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC select only fields we need
-
-# COMMAND ----------
-
-circute_selected_df = circuits_df.select("circuitID","circuitRef","name","location","country","lat","lng","alt")
-
-# COMMAND ----------
-
-display(circute_selected_df)
-
-# COMMAND ----------
-
-# for import col
-from pyspark.sql.functions import col
-
-# COMMAND ----------
-
-circute_selected_df = circuits_df.select(col("circuitId"),col("circuitRef"),col("name"),col("location"),col("country"),col("lat"),col("lng"),col("alt") )
-
-# COMMAND ----------
-
-display(circute_selected_df)
-
-# COMMAND ----------
-
-# use aliasing
-circute_selected_df = circuits_df.select(col("circuitId").alias("circuit_ID"),col("circuitRef"),col("name"),col("location"),col("country"),col("lat"),col("lng"),col("alt") )
-
-# COMMAND ----------
-
-display(circute_selected_df)
-
-# COMMAND ----------
-
-circute_renamed_df = circute_selected_df.withColumnRenamed("circuitId", "circute_id")\
-                                        .withColumnRenamed("circuitRef", "circute_ref")\
-                                        .withColumnRenamed("lat", "latitude")\
-                                        .withColumnRenamed("lng", "longitude")\
-                                        .withColumnRenamed("alt", "altitude")
-
-# COMMAND ----------
-
-display(circute_renamed_df)
+display(laptimes_final_df)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Add ingestion data column
-
-# COMMAND ----------
-
-from pyspark.sql.functions import current_timestamp
-
-# COMMAND ----------
-
-circute_final_df = circute_renamed_df.withColumn("ingestion_date", current_timestamp())
-
-# COMMAND ----------
-
-display(circute_final_df )
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC #### Write data as parquet formate
+# MAGIC ####Write deta as delta formate(As only delta is supported).
 # MAGIC
-
-# COMMAND ----------
-
-laptimes_final_df.write.parquet("/mnt/processed/lap_times/")
-
-# COMMAND ----------
-
-df = spark.read.parquet("/mnt/processed/lap_times/")
 
 # COMMAND ----------
 
@@ -243,12 +117,9 @@ display(spark.read.parquet("/mnt/processed/lap_times/"))
 
 # COMMAND ----------
 
-display(df)
+laptimes_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.lap_times")
 
 # COMMAND ----------
 
-laptimes_final_df.write.mode("overwrite").parquet("/mnt/processed/lap_times")
-
-# COMMAND ----------
-
-
+# MAGIC %sql
+# MAGIC select * from f1_processed.lap_times

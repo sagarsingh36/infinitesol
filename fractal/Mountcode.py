@@ -47,7 +47,12 @@ dbutils.fs.unmount("/mnt/presentation/")
 
 # COMMAND ----------
 
-display(spark.read.csv("/mnt/raw/circuits.csv"))
+dbutils.fs.ls("/mnt/processed/")
+
+# COMMAND ----------
+
+display(spark.read.csv("/mnt/raw/test/Orders.csv"))
+
 
 # COMMAND ----------
 
