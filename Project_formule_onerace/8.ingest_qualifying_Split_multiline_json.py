@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC step-1 read qualifying Json
+
+# COMMAND ----------
+
 from pyspark.sql.types import StructType,StructField,StringType,DoubleType,FloatType,IntegerType 
 
 # COMMAND ----------
@@ -16,10 +21,6 @@ qualifying_schema = StructType(fields=[StructField("qualifyId", IntegerType(), F
 
 # COMMAND ----------
 
-df= spark.read.json("/mnt/raw/qualifying")
-
-# COMMAND ----------
-
 multiline_df = spark.read \
           .option("multiline", True) \
           .schema(qualifying_schema) \
@@ -27,20 +28,31 @@ multiline_df = spark.read \
 
 # COMMAND ----------
 
-
-multiline_df.write.parquet("/mnt/processed/qualifying/")
-
-# COMMAND ----------
-
-df = spark.read.parquet("/mnt/processed/qualifying/")
+display(multiline_df)
 
 # COMMAND ----------
 
-display(df)
+qualify_corrected_df =qualifying_df.withColumnRenamed("qualifyID", "qualify_id") \
+                                   .withColumnRenamed("raceId", "race_id")\
+                                   .withColumnRenamed("driverId", "driver_id") \
+                                   .withColumnRenamed("constructorID", "constructor_id")
 
 # COMMAND ----------
 
-df.printSchema()
+# MAGIC %md
+# MAGIC Step-2 corrected column
+
+# COMMAND ----------
+
+display(qualify_corrected_df)
+
+# COMMAND ----------
+
+qualify_corrected_df.write.mode("overwrite").parquet("/mnt/processed/qualifying")
+
+# COMMAND ----------
+
+display(spark.read.parquet("/mnt/processed/qualifying"))
 
 # COMMAND ----------
 

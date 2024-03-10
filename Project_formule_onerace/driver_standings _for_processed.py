@@ -53,4 +53,4 @@ final_df.write.mode("overwrite").parquet(f"{presentation_folder_path}/driver_sta
 
 # COMMAND ----------
 
-
+display(final_df.filter("race_year = 2020"))

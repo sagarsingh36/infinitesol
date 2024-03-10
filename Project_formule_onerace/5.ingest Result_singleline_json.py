@@ -89,7 +89,11 @@ results_renamed_df.write.mode("overwrite").partitionBy("race_id").parquet("/mnt/
 
 # COMMAND ----------
 
-display(results_renamed_df)
+race_final_df=spark.read.parquet("/mnt/processed/results")
+
+# COMMAND ----------
+
+display(race_final_df)
 
 # COMMAND ----------
 

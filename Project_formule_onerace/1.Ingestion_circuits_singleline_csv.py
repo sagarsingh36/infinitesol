@@ -8,30 +8,6 @@
 
 # COMMAND ----------
 
-display(spark.read.csv("/mnt/raw/circuits.csv"))
-
-# COMMAND ----------
-
-circutes_df=spark.read.csv("/mnt/raw/circuits.csv")
-
-# COMMAND ----------
-
-type(circutes_df)
-
-# COMMAND ----------
-
-circutes_df.show()
-
-# COMMAND ----------
-
-display(circutes_df)
-
-# COMMAND ----------
-
-circutes_df.printSchema() # to show the string typs
-
-# COMMAND ----------
-
 circuits_df = spark.read.option("header",True).csv("/mnt/raw/circuits.csv")
 
 # COMMAND ----------
@@ -47,11 +23,11 @@ circuits_df = spark.read\
 
 # COMMAND ----------
 
-circuits_df.printSchema
+from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
 
 # COMMAND ----------
 
-from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
+circuits_df.printSchema()
 
 # COMMAND ----------
 
@@ -71,13 +47,9 @@ circutes_schema = StructType(fields=[StructField("circuitId", IntegerType(), Fal
 # COMMAND ----------
 
 circutes_df = spark.read\
-    .option("header", True)\
+        .option("header", True)\
         .schema(circutes_schema)\
-            .csv("/mnt/raw/circuits.csv")
-
-# COMMAND ----------
-
-
+        .csv("/mnt/raw/circuits.csv")
 
 # COMMAND ----------
 
@@ -104,15 +76,6 @@ from pyspark.sql.functions import col
 # COMMAND ----------
 
 circute_selected_df = circuits_df.select(col("circuitId"),col("circuitRef"),col("name"),col("location"),col("country"),col("lat"),col("lng"),col("alt") )
-
-# COMMAND ----------
-
-display(circute_selected_df)
-
-# COMMAND ----------
-
-# use aliasing
-#circute_selected_df = circuits_df.select(col("circuitId").alias("circuit_ID,col("circuitRef"),col("name"),col("location"),col("country"),col("lat"),col("lng"),col("alt") )
 
 # COMMAND ----------
 
@@ -155,15 +118,7 @@ display(circute_final_df )
 
 # COMMAND ----------
 
-#circute_final_df.write.parquet("/mnt/processed/circutes/")
-
-# COMMAND ----------
-
-df = spark.read.parquet("/mnt/processed/circutes/")
-
-# COMMAND ----------
-
-display(spark.read.parquet("/mnt/processed/circutes/"))
+df=spark.read.parquet("/mnt/processed/circutes/")
 
 # COMMAND ----------
 
@@ -171,7 +126,7 @@ display(df)
 
 # COMMAND ----------
 
-circute_final_df.write.mode("overwrite").parquet("/mnt/processed/circutes")
+circute_final_df.write.mode("overwrite").parquet("/mnt/processed/circutes/")
 
 # COMMAND ----------
 

@@ -1,10 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC ### step 1. Read file
-# MAGIC ### step 2. Rename column name
-# MAGIC ### step 3. select the needed column
-# MAGIC ### step 4. Add new column (ingestion_date)
-# MAGIC #### step 5. wr data back
+# MAGIC
 
 # COMMAND ----------
 
@@ -29,11 +26,12 @@ display(laptimes_df)
 
 # COMMAND ----------
 
-from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
+# MAGIC %md
+# MAGIC Step-1 Read the multiple csv file
 
 # COMMAND ----------
 
-from pyspark.sql.types import StructType,StructField,StringType,IntegerType
+from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
 
 # COMMAND ----------
 
@@ -57,17 +55,8 @@ display(laptimes_df)
 
 # COMMAND ----------
 
-from pyspark.sql.types import StructType,StructField,IntegerType,DoubleType,StringType
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC select only fields we need
-
-# COMMAND ----------
-
 # MAGIC %md
-# MAGIC ### Add ingestion data column
+# MAGIC Step-2 Rename and add columns
 
 # COMMAND ----------
 
@@ -75,32 +64,51 @@ from pyspark.sql.functions import current_timestamp
 
 # COMMAND ----------
 
+laptimes_renamed_df= laptimes_df.withColumnRenamed("raceId", "race_id") \
+                             .withColumnRenamed("driverId", "driver_id") \
+                             .withColumn("ingest_date", current_timestamp())
+                            
+
+# COMMAND ----------
+
+dbutils.fs.ls("/")
+
+# COMMAND ----------
+
 # MAGIC %md
-# MAGIC ####Write deta as delta formate(As only delta is supported).
 # MAGIC
 
 # COMMAND ----------
 
-df = spark.read.parquet("/mnt/processed/lap_times/")
+laptimes_final_df=laptimes_renamed_df.write.mode("overwrite").parquet("/mnt/processed/lap_timess")
 
 # COMMAND ----------
 
-display(df)
-
-# COMMAND ----------
-
-df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.laptimes")
-
-# COMMAND ----------
-
+display(spark.read.parquet("/mnt/processed/lap_timess"))
 
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC select * from f1_processed.laptimes
+display(laptimes_final_df)
 
 # COMMAND ----------
 
-dbutils.fs.mounts()
-dbutils.fs.ls("")
+# MAGIC %md
+# MAGIC ####Write data in ADLS.
+# MAGIC
+
+# COMMAND ----------
+
+laptimes_final_df = spark.read.format("parquet").load("/mnt/processed/lap_times")
+
+# COMMAND ----------
+
+laptimes_final_df.write.mode("overwrite").parquet("/mnt/processed/lap_times")
+
+# COMMAND ----------
+
+display(spark.read.parquet("/mnt/processed/lap_times"))
+
+# COMMAND ----------
+
+

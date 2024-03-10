@@ -26,9 +26,9 @@ races_schema = StructType(fields=[StructField("raceid", IntegerType(), False ),
 # COMMAND ----------
 
 races_df = spark.read \
-    .option("header", True) \
-    .schema(races_schema) \
-        .csv("/mnt/raw/races.csv")
+             .option("header", True) \
+             .schema(races_schema) \
+             .csv("/mnt/raw/races.csv")
 
 # COMMAND ----------
 
@@ -68,10 +68,6 @@ races_selected_df = races_with_timestamp_df.select(col("raceid").alias("race_id"
 # COMMAND ----------
 
 display(races_selected_df)
-
-# COMMAND ----------
-
-races_selected_df.write.mode("overwrite").parquet("/mnt/processed/races")
 
 # COMMAND ----------
 

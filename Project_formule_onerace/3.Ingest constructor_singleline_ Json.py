@@ -4,6 +4,10 @@
 
 # COMMAND ----------
 
+#create schema constructor_schema=("constructorId INT,constructorRef STRING,nationality STRING, url STRING )
+
+# COMMAND ----------
+
 from pyspark.sql.types import StructType, StructField, StringType,IntegerType,FloatType,DoubleType
 
 # COMMAND ----------
@@ -14,7 +18,6 @@ spark.read.json("dbfs:/mnt/raw/constructors.json")
 
 constructor_schema = StructType(fields=[StructField("constructorId", IntegerType(), False ),
                                   StructField("constructorRef", StringType(), False ),
-                                  StructField("name", StringType(), False ),
                                   StructField("nationality", StringType(), False ),
                                   StructField("url", StringType(), False )
 ])
@@ -55,7 +58,7 @@ from pyspark.sql.functions import current_timestamp,lit,col,concat
 # COMMAND ----------
 
 construct_final_df= constructor_selection_df.withColumnRenamed("constructorId", "constructor_id") \
-                                  .withColumnRenamed("constructorRef", "constructor_ref")\
+                                    .withColumnRenamed("constructorRef", "constructor_ref")\
                                     .withColumn("ingestion_date",current_timestamp())
 
 # COMMAND ----------
